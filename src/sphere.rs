@@ -1,4 +1,4 @@
-use crate::inteval::Interval;
+use crate::interval::Interval;
 use crate::vec3::Point3;
 use crate::ray::Ray;
 use crate::hittable::{Hittable, HitRecord};

@@ -1,4 +1,4 @@
-use crate::{hittable::Hittable, ray::Ray, color::Color, inteval::Interval, vec3::{Point3, Vec3}};
+use crate::{hittable::Hittable, ray::Ray, color::Color, interval::Interval, vec3::{Point3, Vec3}};
 
 use rand::Rng;
 

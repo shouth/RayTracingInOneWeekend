@@ -1,4 +1,4 @@
-use crate::{hittable::{Hittable, HitRecord}, ray::Ray, inteval::Interval};
+use crate::{hittable::{Hittable, HitRecord}, ray::Ray, interval::Interval};
 
 #[derive(Default)]
 pub struct HittableList {

@@ -9,7 +9,7 @@ mod ray;
 mod hittable;
 mod sphere;
 mod hittable_list;
-mod inteval;
+mod interval;
 mod camera;
 
 fn main() {
