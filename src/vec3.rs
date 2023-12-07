@@ -1,5 +1,7 @@
-use std::ops::{Deref, Neg, AddAssign, DerefMut, MulAssign, DivAssign, Add, Mul, Sub, Div};
 use std::fmt::Display;
+use std::ops::{Add, AddAssign, Deref, DerefMut, Div, DivAssign, Mul, MulAssign, Neg, Sub};
+
+use rand::Rng;
 
 #[derive(Clone, Copy, Default)]
 pub struct Vec3([f64; 3]);
@@ -46,13 +48,36 @@ impl Vec3 {
     pub fn unit(self) -> Self {
         self / self.length()
     }
+
+    pub fn unit_random() -> Self {
+        let mut rng = rand::thread_rng();
+        loop {
+            let p = Vec3::new(
+                rng.gen_range(-1.0..=1.0),
+                rng.gen_range(-1.0..=1.0),
+                rng.gen_range(-1.0..=1.0),
+            );
+            if p.length_squared() < 1.0 {
+                return p.unit();
+            }
+        }
+    }
+
+    pub fn unit_random_in_hemisphere(normal: Vec3) -> Self {
+        let in_unit_sphere = Vec3::unit_random();
+        if in_unit_sphere.dot(normal) > 0.0 {
+            in_unit_sphere
+        } else {
+            -in_unit_sphere
+        }
+    }
 }
 
 impl Neg for Vec3 {
     type Output = Vec3;
 
     fn neg(self) -> Self::Output {
-        Vec3([ -self[0], -self[1], -self[2] ])
+        Vec3([-self[0], -self[1], -self[2]])
     }
 }
 
@@ -68,7 +93,7 @@ impl Add for Vec3 {
     type Output = Vec3;
 
     fn add(self, rhs: Self) -> Self::Output {
-        Vec3([ self[0] + rhs[0], self[1] + rhs[1], self[2] + rhs[2] ])
+        Vec3([self[0] + rhs[0], self[1] + rhs[1], self[2] + rhs[2]])
     }
 }
 
@@ -76,7 +101,7 @@ impl Sub for Vec3 {
     type Output = Vec3;
 
     fn sub(self, rhs: Self) -> Self::Output {
-        Vec3([ self[0] - rhs[0], self[1] - rhs[1], self[2] - rhs[2] ])
+        Vec3([self[0] - rhs[0], self[1] - rhs[1], self[2] - rhs[2]])
     }
 }
 
@@ -92,7 +117,7 @@ impl Mul for Vec3 {
     type Output = Vec3;
 
     fn mul(self, rhs: Self) -> Self::Output {
-        Vec3([ self[0] * rhs[0], self[1] * rhs[1], self[2] * rhs[2] ])
+        Vec3([self[0] * rhs[0], self[1] * rhs[1], self[2] * rhs[2]])
     }
 }
 
@@ -100,7 +125,7 @@ impl Mul<f64> for Vec3 {
     type Output = Vec3;
 
     fn mul(self, rhs: f64) -> Self::Output {
-        Vec3([ self[0] * rhs, self[1] * rhs, self[2] * rhs ])
+        Vec3([self[0] * rhs, self[1] * rhs, self[2] * rhs])
     }
 }
 
@@ -124,7 +149,7 @@ impl Div<f64> for Vec3 {
     type Output = Vec3;
 
     fn div(self, rhs: f64) -> Self::Output {
-        Vec3([ self[0] / rhs, self[1] / rhs, self[2] / rhs ])
+        Vec3([self[0] / rhs, self[1] / rhs, self[2] / rhs])
     }
 }
 

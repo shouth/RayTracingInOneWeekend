@@ -6,6 +6,7 @@ pub struct Camera {
     pub aspect_ratio: f64,
     pub image_width: i32,
     pub sample_per_pixel: i32,
+    pub max_depth: i32,
     image_height: i32,
     center: Point3,
     pixel00_loc: Point3,
@@ -19,6 +20,7 @@ impl Default for Camera {
             aspect_ratio: 1.0,
             image_width: 100,
             sample_per_pixel: 10,
+            max_depth: 10,
             image_height: 0,
             center: Point3::default(),
             pixel00_loc: Point3::default(),
@@ -42,13 +44,13 @@ impl Camera {
                 let mut pixel_color = Color::default();
                 for _ in 0..self.sample_per_pixel {
                     let ray = self.get_ray(i, j);
-                    pixel_color += self.ray_color(&ray, world);
+                    pixel_color += self.ray_color(&ray, self.max_depth, world);
                 }
                 println!("{}", pixel_color.color_str(self.sample_per_pixel));
             }
         }
 
-        eprint!("\rDone.                 \n");
+        eprint!("\rDone.                    \n");
     }
 
     fn initialize(&mut self) {
@@ -83,15 +85,21 @@ impl Camera {
 
     fn pixel_sample_square(&self) -> Vec3 {
         let mut rng = rand::thread_rng();
-        let px = rng.gen_range(-0.5..0.5);
-        let py = rng.gen_range(-0.5..0.5);
+        let px = rng.gen_range(-0.5..=0.5);
+        let py = rng.gen_range(-0.5..=0.5);
         px * self.pixel_delta_u + py * self.pixel_delta_v
     }
 
-    fn ray_color(&self, r: &Ray, world: &impl Hittable) -> Color {
-        match world.hit(r, Interval::new(0.0, f64::INFINITY)) {
+    fn ray_color(&self, r: &Ray, depth: i32, world: &impl Hittable) -> Color {
+        if depth <= 0 {
+            return Color::default();
+        }
+
+        match world.hit(r, Interval::new(0.001, f64::INFINITY)) {
             Some(record) => {
-                0.5 * (record.normal + Color::new(1.0, 1.0, 1.0))
+                // let direction = Vec3::unit_random_in_hemisphere(record.normal);
+                let direction = record.normal + Vec3::unit_random();
+                0.5 * self.ray_color(&Ray::new(record.p, direction), depth - 1, world)
             },
             None => {
                 let unit_direction = r.direction().unit();

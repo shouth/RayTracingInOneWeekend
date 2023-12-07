@@ -17,11 +17,11 @@ fn main() {
     world.add(Box::new(Sphere::new(Point3::new(0.0, 0.0, -1.0), 0.5)));
     world.add(Box::new(Sphere::new(Point3::new(0.0, -100.5, -1.0), 100.0)));
     let world = world;
-    let _ = 0.0..1.0;
 
     let mut camera = Camera::default();
     camera.aspect_ratio = 16.0 / 9.0;
     camera.image_width = 400;
     camera.sample_per_pixel = 100;
+    camera.max_depth = 50;
     camera.render(&world);
 }
