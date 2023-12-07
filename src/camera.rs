@@ -37,7 +37,7 @@ impl Camera {
         println!("255");
 
         for j in 0..self.image_height {
-            eprint!("\rScanlines remaining: {}", (self.image_height - j));
+            eprint!("\rScanlines remaining: {:3}", (self.image_height - j));
             for i in 0..self.image_width {
                 let mut pixel_color = Color::default();
                 for _ in 0..self.sample_per_pixel {
