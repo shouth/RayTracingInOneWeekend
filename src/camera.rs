@@ -97,9 +97,10 @@ impl Camera {
 
         match world.hit(r, Interval::new(0.001, f64::INFINITY)) {
             Some(record) => {
-                // let direction = Vec3::unit_random_in_hemisphere(record.normal);
-                let direction = record.normal + Vec3::unit_random();
-                0.5 * self.ray_color(&Ray::new(record.p, direction), depth - 1, world)
+                match record.mat.as_ref().and_then(|mat| mat.scatter(r, &record)) {
+                    Some((attenuation, scattered)) => attenuation * self.ray_color(&scattered, depth - 1, world),
+                    None => Color::default(),
+                }
             },
             None => {
                 let unit_direction = r.direction().unit();
