@@ -1,5 +1,3 @@
-use std::ops::{Deref, DerefMut};
-
 use crate::{vec3::Vec3, interval::Interval};
 
 pub type Color = Vec3;
