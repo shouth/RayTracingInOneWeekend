@@ -3,7 +3,7 @@ use std::ops::{Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, 
 
 use rand::Rng;
 
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy, Debug, Default)]
 pub struct Vec3([f64; 3]);
 
 pub type Point3 = Vec3;
@@ -69,6 +69,20 @@ impl Vec3 {
             in_unit_sphere
         } else {
             -in_unit_sphere
+        }
+    }
+
+    pub fn random_in_unit_disk() -> Self {
+        let mut rng = rand::thread_rng();
+        loop {
+            let p = Vec3::new(
+                rng.gen_range(-1.0..=1.0),
+                rng.gen_range(-1.0..=1.0),
+                0.0,
+            );
+            if p.length_squared() < 1.0 {
+                return p;
+            }
         }
     }
 

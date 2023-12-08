@@ -5,7 +5,7 @@ use color::Color;
 use hittable_list::HittableList;
 use material::{Dielectric, Lambertian, Metal};
 use sphere::Sphere;
-use vec3::Point3;
+use vec3::{Point3, Vec3};
 
 mod camera;
 mod color;
@@ -22,7 +22,7 @@ fn main() {
     let material_ground = Lambertian::new(Color::new(0.8, 0.8, 0.0));
     let material_center = Lambertian::new(Color::new(0.1, 0.2, 0.5));
     let material_left = Dielectric::new(1.5);
-    let material_right = Metal::new(Color::new(0.8, 0.6, 0.2), 1.0);
+    let material_right = Metal::new(Color::new(0.8, 0.6, 0.2), 0.01);
 
     world.add(Sphere::new(
         Point3::new(0.0, -100.5, -1.0),
@@ -58,6 +58,8 @@ fn main() {
     camera.vfov = 20.0;
     camera.lookfrom = Point3::new(-2.0, 2.0, 1.0);
     camera.lookat = Point3::new(0.0, 0.0, -1.0);
-    camera.vup = Point3::new(0.0, 1.0, 0.0);
+    camera.vup = Vec3::new(0.0, 1.0, 0.0);
+    camera.defocus_angle = 10.0;
+    camera.focus_distance = 3.4;
     camera.render(&world);
 }
