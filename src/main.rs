@@ -56,5 +56,8 @@ fn main() {
     camera.sample_per_pixel = 100;
     camera.max_depth = 50;
     camera.vfov = 20.0;
+    camera.lookfrom = Point3::new(-2.0, 2.0, 1.0);
+    camera.lookat = Point3::new(0.0, 0.0, -1.0);
+    camera.vup = Point3::new(0.0, 1.0, 0.0);
     camera.render(&world);
 }
