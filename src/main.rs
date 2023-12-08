@@ -39,25 +39,24 @@ fn main() {
 
             if (center - Point3::new(4.0, 0.2, 0.0)).length() > 0.9 {
                 if choose_mat < 0.8 {
-                    // diffuse
                     let albedo = Color::new(
-                        rng.gen_range(0.0..=1.0) * rng.gen_range(0.0..=1.0),
-                        rng.gen_range(0.0..=1.0) * rng.gen_range(0.0..=1.0),
-                        rng.gen_range(0.0..=1.0) * rng.gen_range(0.0..=1.0));
+                        rng.gen_range(0.0..=1.0),
+                        rng.gen_range(0.0..=1.0),
+                        rng.gen_range(0.0..=1.0),
+                    );
+                    let albedo = albedo * albedo;
                     let sphere_material = Lambertian::new(albedo);
                     world.add(Sphere::new(center, 0.2, Some(Rc::new(sphere_material))));
                 } else if choose_mat < 0.95 {
-                    // metal
                     let albedo = Color::new(
                         rng.gen_range(0.5..=1.0),
                         rng.gen_range(0.5..=1.0),
-                        rng.gen_range(0.5..=1.0));
-                    let albedo = albedo * albedo;
-                    let fuzz = rand::random::<f64>() * 0.5;
+                        rng.gen_range(0.5..=1.0),
+                    );
+                    let fuzz = rng.gen_range(0.0..=0.5);
                     let sphere_material = Metal::new(albedo, fuzz);
                     world.add(Sphere::new(center, 0.2, Some(Rc::new(sphere_material))));
                 } else {
-                    // glass
                     let sphere_material = Dielectric::new(1.5);
                     world.add(Sphere::new(center, 0.2, Some(Rc::new(sphere_material))));
                 }
@@ -66,11 +65,23 @@ fn main() {
     }
 
     let material1 = Dielectric::new(1.5);
-    world.add(Sphere::new(Point3::new(0.0, 1.0, 0.0), 1.0, Some(Rc::new(material1))));
+    world.add(Sphere::new(
+        Point3::new(0.0, 1.0, 0.0),
+        1.0,
+        Some(Rc::new(material1)),
+    ));
     let material2 = Lambertian::new(Color::new(0.4, 0.2, 0.1));
-    world.add(Sphere::new(Point3::new(-4.0, 1.0, 0.0), 1.0, Some(Rc::new(material2))));
+    world.add(Sphere::new(
+        Point3::new(-4.0, 1.0, 0.0),
+        1.0,
+        Some(Rc::new(material2)),
+    ));
     let material3 = Metal::new(Color::new(0.7, 0.6, 0.5), 0.0);
-    world.add(Sphere::new(Point3::new(4.0, 1.0, 0.0), 1.0, Some(Rc::new(material3))));
+    world.add(Sphere::new(
+        Point3::new(4.0, 1.0, 0.0),
+        1.0,
+        Some(Rc::new(material3)),
+    ));
 
     let mut camera = Camera::default();
     camera.aspect_ratio = 16.0 / 9.0;

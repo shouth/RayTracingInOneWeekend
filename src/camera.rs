@@ -1,10 +1,8 @@
-use crate::{
-    color::Color,
-    hittable::Hittable,
-    interval::Interval,
-    ray::Ray,
-    vec3::{Point3, Vec3},
-};
+use crate::color::Color;
+use crate::hittable::Hittable;
+use crate::interval::Interval;
+use crate::ray::Ray;
+use crate::vec3::{Point3, Vec3};
 
 use rand::Rng;
 
@@ -68,7 +66,11 @@ impl Camera {
         println!("255");
 
         for j in 0..self.image_height {
-            eprint!("\rScanlines remaining: {:1$}", (self.image_height - j), self.image_height.ilog10() as usize + 1);
+            eprint!(
+                "\rScanlines remaining: {:1$}",
+                (self.image_height - j),
+                self.image_height.ilog10() as usize + 1
+            );
             for i in 0..self.image_width {
                 let mut pixel_color = Color::default();
                 for _ in 0..self.sample_per_pixel {
@@ -79,7 +81,7 @@ impl Camera {
             }
         }
 
-        eprint!("\rDone.                 {:1$}\n", "", self.image_height.ilog10() as usize + 1);
+        eprint!("\rDone.                                \n");
     }
 
     fn initialize(&mut self) {
