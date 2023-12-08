@@ -1,4 +1,4 @@
-use crate::{vec3::Vec3, interval::Interval};
+use crate::{interval::Interval, vec3::Vec3};
 
 pub type Color = Vec3;
 
@@ -23,7 +23,8 @@ impl Color {
 
         const INTENSITY: Interval = Interval::new(0.0, 0.999);
 
-        format!("{} {} {}",
+        format!(
+            "{} {} {}",
             (INTENSITY.clamp(r) * 256.0) as i32,
             (INTENSITY.clamp(g) * 256.0) as i32,
             (INTENSITY.clamp(b) * 256.0) as i32,

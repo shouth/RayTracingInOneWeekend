@@ -1,5 +1,5 @@
 use std::fmt::Display;
-use std::ops::{Add, AddAssign, Deref, DerefMut, Div, DivAssign, Mul, MulAssign, Neg, Sub};
+use std::ops::{Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, Neg, Sub};
 
 use rand::Rng;
 
@@ -79,6 +79,13 @@ impl Vec3 {
 
     pub fn reflect(self, normal: Vec3) -> Vec3 {
         self - 2.0 * self.dot(normal) * normal
+    }
+
+    pub fn refract(self, normal: Vec3, etai_over_etat: f64) -> Vec3 {
+        let cos_theta = (-self).dot(normal).min(1.0);
+        let r_out_perp = etai_over_etat * (self + cos_theta * normal);
+        let r_out_parallel = -(1.0 - r_out_perp.length_squared()).abs().sqrt() * normal;
+        r_out_perp + r_out_parallel
     }
 }
 
@@ -162,17 +169,17 @@ impl Div<f64> for Vec3 {
     }
 }
 
-impl Deref for Vec3 {
-    type Target = [f64; 3];
+impl Index<usize> for Vec3 {
+    type Output = f64;
 
-    fn deref(&self) -> &Self::Target {
-        &self.0
+    fn index(&self, index: usize) -> &Self::Output {
+        &self.0[index]
     }
 }
 
-impl DerefMut for Vec3 {
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.0
+impl IndexMut<usize> for Vec3 {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        &mut self.0[index]
     }
 }
 

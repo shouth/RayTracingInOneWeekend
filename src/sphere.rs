@@ -1,10 +1,10 @@
 use std::rc::Rc;
 
+use crate::hittable::{HitRecord, Hittable};
 use crate::interval::Interval;
 use crate::material::Material;
-use crate::vec3::Point3;
 use crate::ray::Ray;
-use crate::hittable::{Hittable, HitRecord};
+use crate::vec3::Point3;
 
 pub struct Sphere {
     center: Point3,
@@ -14,7 +14,11 @@ pub struct Sphere {
 
 impl Sphere {
     pub fn new(center: Point3, radius: f64, material: Option<Rc<dyn Material>>) -> Self {
-        Self { center, radius, material }
+        Self {
+            center,
+            radius,
+            material,
+        }
     }
 }
 
