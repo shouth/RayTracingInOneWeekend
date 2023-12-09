@@ -90,11 +90,11 @@ fn main() {
         Some(Rc::new(material2)),
     )));
     let material3 = Metal::new(Color::new(0.7, 0.6, 0.5), 0.0);
-    world.add(Sphere::new(
+    world.add(Box::new(Sphere::new(
         Point3::new(4.0, 1.0, 0.0),
         1.0,
         Some(Rc::new(material3)),
-    ));
+    )));
 
     let mut camera = Camera::default();
     camera.aspect_ratio = 16.0 / 9.0;
