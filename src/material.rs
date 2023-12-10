@@ -96,3 +96,20 @@ impl Material for Dielectric {
         return Some((Color::new(1.0, 1.0, 1.0), Ray::new(hit_record.p, direction)));
     }
 }
+
+#[derive(Clone)]
+pub struct Growing {
+    color: Color,
+}
+
+impl Growing {
+    pub fn new(color: Color) -> Self {
+        Self { color }
+    }
+}
+
+impl Material for Growing {
+    fn scatter(&self, ray: &Ray, _: &HitRecord) -> Option<(Color, Ray)> {
+        Some((self.color, Ray::new(ray.origin(), -ray.direction())))
+    }
+}

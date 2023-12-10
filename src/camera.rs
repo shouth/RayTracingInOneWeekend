@@ -151,7 +151,11 @@ impl Camera {
         match world.hit(r, Interval::new(0.001, f64::INFINITY)) {
             Some(record) => match record.mat.as_ref().and_then(|mat| mat.scatter(r, &record)) {
                 Some((attenuation, scattered)) => {
-                    attenuation * self.ray_color(&scattered, depth - 1, world)
+                    if (scattered.direction() + r.direction()).near_zero() {
+                        attenuation
+                    } else {
+                        attenuation * self.ray_color(&scattered, depth - 1, world)
+                    }
                 }
                 None => Color::default(),
             },
